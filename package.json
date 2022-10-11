@@ -1,0 +1,25 @@
+{
+  "name": "bowling_kata",
+  "version": "1.0.0",
+  "description": "Bowling Kata using Test Driven Development",
+  "main": "bowling_kata.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tachyla/bowling_kata.git"
+  },
+  "author": "TaChyla Murray",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tachyla/bowling_kata/issues"
+  },
+  "homepage": "https://github.com/tachyla/bowling_kata#readme",
+  "dependencies": {
+    "jest": "^29.1.2"
+  }
+}
