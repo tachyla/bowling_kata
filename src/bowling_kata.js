@@ -4,9 +4,12 @@ module.exports = class BowlingGame{
         p2: []
     };
 
-    getScore(){
-
-        return '0 - 0';
+    addToScore(player, frameScore){
+        if(player === this.playerScores.p2){
+            this.playersScores.p1.push(frameScore)
+        }
     }
+
+
 }
 
