@@ -16,4 +16,15 @@ describe('bowling game', () => {
 
         expect(result).toEqual(9);
     });
-})
+
+    it('calculates player score as 10 points from frame 1', () => {
+        const testGame = new Game();
+
+        testGame.recordThrow('player1', 1);
+        testGame.recordThrow('player1', 9);
+        let result = testGame.calculateScore('player1');
+
+
+        expect(result).toEqual(10);
+    });
+});
