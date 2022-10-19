@@ -1,7 +1,13 @@
-
-const Game = require('./src/bowlingGame');
+const Game = require('../src/bowlingGame');
 
 describe('bowling game', () => {
+
+    it('adds 0 point value from player throw', () => {
+        const testGame = new Game();
+        let result = testGame.recordThrow('player1', 0);
+
+        expect(result).toEqual(0);
+    });
 
     it('adds 1 point value from player throw', () => {
         const testGame = new Game();
@@ -17,13 +23,20 @@ describe('bowling game', () => {
         expect(result).toEqual(9);
     });
 
+    it('adds 10 points value from player throw', () => {
+        const testGame = new Game();
+        let result = testGame.recordThrow('player1', 10);
+
+        expect(result).toEqual(10);
+    });
+    
+
     it('calculates player score as 10 points from frame 1', () => {
         const testGame = new Game();
 
         testGame.recordThrow('player1', 1);
         testGame.recordThrow('player1', 9);
         let result = testGame.calculateScore('player1');
-
 
         expect(result).toEqual(10);
     });
