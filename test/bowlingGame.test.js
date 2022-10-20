@@ -25,32 +25,13 @@ describe('bowling game', () => {
         expect(testGame.scores).toEqual([10]);
     });
 
-    it('restricts recordThrow to be called two times maximum per frame', () => {
+    it('frame 1 allows two throws', () => {
         const testGame = new Game();
-
-        expect(() => {
-            testGame.executeFrame([5, 4, 1])
-            }).toThrow(new Error("Only two rolls are allowed per frame"));
+        testGame.recordThrow(5);
+        testGame.recordThrow(4);
+        expect(testGame.frames[0]).toEqual({
+            first_roll: 5,
+            second_roll: 4
+        });
     });
-
-    it('bowler tries two rolls in a frame', () => {
-        const testGame = new Game();
-        testGame.executeFrame([5,5]);
-        expect(testGame.scores).toEqual([5, 5]);
-    });  
-
-    it('restricts invalid roll combinations', () => {
-        const testGame = new Game();
-        expect(() => {
-            testGame.executeFrame([5, 6])
-        }).toThrow(RangeError("Total frame points cannot exceed 10"));
-
-    });
-
-    it('returns total points of one frame', () => {
-        const testGame = new Game();
-        expect(testGame.executeFrame([5, 0])).toEqual(5);
-    });
-
-
 });
