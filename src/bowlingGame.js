@@ -10,7 +10,13 @@ module.exports = class Game {
         }
 
         rollValues.forEach(this.recordThrow);
-        return rollValues[0] + rollValues[1];
+        let totalFrameValue  =  rollValues[0] + rollValues[1];
+
+        if(totalFrameValue > 10){
+            throw new RangeError("Total frame points cannot exceed 10");
+        }
+
+        return totalFrameValue;
     }
 
     recordThrow = (pinValue) => {    

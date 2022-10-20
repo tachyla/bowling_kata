@@ -39,11 +39,18 @@ describe('bowling game', () => {
         expect(testGame.scores).toEqual([5, 5]);
     });  
 
-    it('returns total points in a frame', () => {
+    it('restricts invalid roll combinations', () => {
         const testGame = new Game();
-
-        expect(testGame.executeFrame([5, 0])).toEqual(5);
+        expect(() => {
+            testGame.executeFrame([5, 6])
+        }).toThrow(RangeError("Total frame points cannot exceed 10"));
 
     });
+
+    it('returns total points of one frame', () => {
+        const testGame = new Game();
+        expect(testGame.executeFrame([5, 0])).toEqual(5);
+    });
+
 
 });
