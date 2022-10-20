@@ -17,4 +17,12 @@ describe('bowling game', () => {
 
     });
 
+    it('restricts score from being mutated outside of recordThrow method', () => {
+        const testGame = new Game();
+        testGame.recordThrow(10);
+        testGame.scores.push(1);
+
+        expect(testGame.scores).toEqual([10]);
+    })
+
 });
