@@ -1,28 +1,19 @@
 module.exports = class Game {
+
     constructor(){
-       this.players = [
-        {name: 'player1', score: []}
-       ];
+        this._scores = [];
+    }
     
-    }
  
-    recordThrow = (playerValue, pinValue) => {
-        if(playerValue === this.players[0].name){
-            let playerScore = this.players[0].score;
-            playerScore.push(pinValue);
-            return playerScore[playerScore.length - 1];
-        };
+    recordThrow = (pinValue) => {    
+        if(pinValue > 10){
+            throw new RangeError("You can't roll more than 10");
+        }  
+           this._scores.push(pinValue);
     }
 
-    calculateScore = (playerValue) => {
-        if(this.players[0].name === playerValue){
-            let total = 0;
-
-            for(let i = 0; i < this.players[0].score.length; i++){
-                total += this.players[0].score[i];
-            }
-            return total;
-        }
+    get scores(){
+        return [...this._scores];
     }
 
 }

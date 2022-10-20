@@ -2,42 +2,31 @@ const Game = require('../src/bowlingGame');
 
 describe('bowling game', () => {
 
-    it('adds 0 point value from player throw', () => {
-        const testGame = new Game();
-        let result = testGame.recordThrow('player1', 0);
-
-        expect(result).toEqual(0);
-    });
-
     it('adds 1 point value from player throw', () => {
         const testGame = new Game();
-        let result = testGame.recordThrow('player1', 1);
-
-        expect(result).toEqual(1);
+        testGame.recordThrow(1);
+        expect(testGame.scores).toEqual([1]);
     });
 
-    it('adds 9 points value from player throw', () => {
+    it("demo test", () => {
         const testGame = new Game();
-        let result = testGame.recordThrow('player1', 9);
+        testGame.recordThrow(2);
+        testGame.scores.push(3);
+        expect(testGame.scores).toEqual([2]);
 
-        expect(result).toEqual(9);
-    });
-
-    it('adds 10 points value from player throw', () => {
-        const testGame = new Game();
-        let result = testGame.recordThrow('player1', 10);
-
-        expect(result).toEqual(10);
     });
     
-
-    it('calculates player score as 10 points from frame 1', () => {
+    it('records throwing invalid throw', () => {
         const testGame = new Game();
 
-        testGame.recordThrow('player1', 1);
-        testGame.recordThrow('player1', 9);
-        let result = testGame.calculateScore('player1');
+        expect(() => {
+            testGame.recordThrow(15)
+        }).toThrow(RangeError);
 
-        expect(result).toEqual(10);
     });
+
+    xit('records throwing 1 frame with 2 tries', () => {})
+    xit('records throwing gutter ball', () => {});
+    xit('records throwing a spare', () => {})
+
 });
