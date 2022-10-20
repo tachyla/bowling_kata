@@ -33,4 +33,17 @@ describe('bowling game', () => {
             }).toThrow(new Error("Only two rolls are allowed per frame"));
     });
 
+    it('bowler tries two rolls in a frame', () => {
+        const testGame = new Game();
+        testGame.executeFrame([5,5]);
+        expect(testGame.scores).toEqual([5, 5]);
+    });  
+
+    it('returns total points in a frame', () => {
+        const testGame = new Game();
+
+        expect(testGame.executeFrame([5, 0])).toEqual(5);
+
+    });
+
 });

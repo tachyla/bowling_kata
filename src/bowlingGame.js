@@ -9,10 +9,8 @@ module.exports = class Game {
             throw new Error("Only two rolls are allowed per frame");
         }
 
-        else{
-            this.recordThrow(rollValues[0]);
-            this.recordThrow(rollValues[1]);
-        }
+        rollValues.forEach(this.recordThrow);
+        return rollValues[0] + rollValues[1];
     }
 
     recordThrow = (pinValue) => {    
