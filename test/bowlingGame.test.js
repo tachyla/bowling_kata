@@ -23,6 +23,14 @@ describe('bowling game', () => {
         testGame.scores.push(1);
 
         expect(testGame.scores).toEqual([10]);
-    })
+    });
+
+    it('restricts recordThrow to be called two times maximum per frame', () => {
+        const testGame = new Game();
+
+        expect(() => {
+            testGame.executeFrame([5, 4, 1])
+            }).toThrow(new Error("Only two rolls are allowed per frame"));
+    });
 
 });
