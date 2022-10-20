@@ -6,10 +6,11 @@ module.exports = class Game {
     
  
     recordThrow = (pinValue) => {    
-        if(pinValue > 10){
-            throw new RangeError("You can't roll more than 10");
+        if(pinValue > 10 || pinValue < 0){
+            throw new RangeError("Valid rolls are 0 - 10");
         }  
-           this._scores.push(pinValue);
+ 
+        this._scores.push(pinValue);
     }
 
     get scores(){

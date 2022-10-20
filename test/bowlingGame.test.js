@@ -8,25 +8,13 @@ describe('bowling game', () => {
         expect(testGame.scores).toEqual([1]);
     });
 
-    it("demo test", () => {
-        const testGame = new Game();
-        testGame.recordThrow(2);
-        testGame.scores.push(3);
-        expect(testGame.scores).toEqual([2]);
-
-    });
-    
-    it('records throwing invalid throw', () => {
+    it('throws error when outside the valid range of a roll', () => {
         const testGame = new Game();
 
         expect(() => {
-            testGame.recordThrow(15)
+            testGame.recordThrow(-1)
         }).toThrow(RangeError);
 
     });
-
-    xit('records throwing 1 frame with 2 tries', () => {})
-    xit('records throwing gutter ball', () => {});
-    xit('records throwing a spare', () => {})
 
 });
