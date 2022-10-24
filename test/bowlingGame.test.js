@@ -51,5 +51,14 @@ describe('bowling game', () => {
         expect(() => {
             testGame.recordThrow(6)}).toThrow(Error("Invalid roll combination"));
     });
-    
+
+
+    it('returns "spare" when player knocks down all pins', () => {
+        const testGame = new Game();
+        testGame.recordThrow(6);
+        testGame.recordThrow(4);
+
+        expect(testGame.calculateFrameScore()).toEqual("spare");
+    });
+
 });
