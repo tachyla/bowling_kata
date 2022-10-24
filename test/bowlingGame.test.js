@@ -24,7 +24,8 @@ describe('bowling game', () => {
         expect(testGame.frames[0]).toEqual({
             frameNumber: 0,
             first_roll: 5,
-            second_roll: 4
+            second_roll: 4,
+            totalFrameScore: 9
         });
     });
 
@@ -52,7 +53,7 @@ describe('bowling game', () => {
     it('records the first throw in the first frame', () => {
         const testGame = new Game();
         testGame.recordThrow(5);
-        expect(testGame.frames[0]).toEqual({frameNumber: 0, first_roll: 5, second_roll: null});
+        expect(testGame.frames[0]).toEqual({frameNumber: 0, first_roll: 5, second_roll: null, totalFrameScore: null});
     });
 
     it('records a third throw in the next frame', () => {
@@ -60,7 +61,7 @@ describe('bowling game', () => {
         testGame.recordThrow(2);
         testGame.recordThrow(0);
         testGame.recordThrow(8);
-        expect(testGame.frames[1]).toEqual({frameNumber: 1, first_roll: 8, second_roll: null});
+        expect(testGame.frames[1]).toEqual({frameNumber: 1, first_roll: 8, second_roll: null, totalFrameScore: null});
     });
 
     it('records score "spare" when all pins are knocked down in one frame', () => {
@@ -70,5 +71,16 @@ describe('bowling game', () => {
 
         expect(testGame.calculateFrameScore()).toEqual("spare");
     }); 
+
+    it('adds points from previous frame to current frame score', () => {
+        const testGame = new Game();
+        testGame.recordThrow(8);
+        testGame.recordThrow(1);  
+        testGame.recordThrow(8);
+        testGame.recordThrow(1);
+
+        expect(testGame.calculateFrameScore()).toEqual(18);
+        
+    });
     
 });
