@@ -30,11 +30,11 @@ describe('bowling game', () => {
         testGame.recordThrow(5);
         testGame.recordThrow(4);
         expect(testGame.frames[0]).toEqual({
+            frameNumber: 0,
             first_roll: 5,
             second_roll: 4
         });
     });
-
 
     it('returns total points of one frame', () => {
         const testGame = new Game();
@@ -51,5 +51,18 @@ describe('bowling game', () => {
         expect(() => {
             testGame.recordThrow(6)}).toThrow(Error("Invalid roll combination"));
     });
+
+    it('has 10 frames for a new game', () => {
+        const testGame = new Game();
+        expect(testGame.frames.length).toEqual(10);
+    });
+
+    it('records the first roll in the first frame', () => {
+        const testGame = new Game();
+        testGame.recordThrow(5);
+        expect(testGame.frames[0]).toEqual({frameNumber: 0, first_roll: 5, second_roll: null});
+    });
+
+
     
 });
