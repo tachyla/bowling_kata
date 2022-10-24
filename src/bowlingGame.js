@@ -30,7 +30,11 @@ module.exports = class Game {
     }  
 
     calculateFrameScore = () => {
-        return this._frames[0].first_roll + this._frames[0].second_roll;
+        let frameTotal = this._frames[0].first_roll + this._frames[0].second_roll;
+        if(frameTotal === 10){
+            return 'spare';
+        }
+        return frameTotal;
     }
 
     get frames(){

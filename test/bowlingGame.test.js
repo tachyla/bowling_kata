@@ -63,5 +63,11 @@ describe('bowling game', () => {
         expect(testGame.frames[1]).toEqual({frameNumber: 1, first_roll: 8, second_roll: null});
     });
 
-    
+    it('records score "spare" when all pins are knocked down in one frame', () => {
+        const testGame = new Game();
+        testGame.recordThrow(4);
+        testGame.recordThrow(6);
+
+        expect(testGame.calculateFrameScore()).toEqual("spare");
+    });      
 });
