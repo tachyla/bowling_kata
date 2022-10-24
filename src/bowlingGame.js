@@ -18,6 +18,12 @@ module.exports = class Game {
             this._frames[0].first_roll = pinValue;
             return;
         }
+
+        let frameTotal = this._frames[0].first_roll + pinValue;
+
+        if(frameTotal > 10 ){
+            throw new Error("Invalid roll combination");
+        }
         
         this._frames[0].second_roll = pinValue;
     }  

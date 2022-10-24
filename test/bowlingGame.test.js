@@ -1,4 +1,3 @@
-const G = require('glob');
 const Game = require('../src/bowlingGame');
 
 describe('bowling game', () => {
@@ -36,6 +35,7 @@ describe('bowling game', () => {
         });
     });
 
+
     it('returns total points of one frame', () => {
         const testGame = new Game();
         testGame.recordThrow(2);
@@ -43,4 +43,13 @@ describe('bowling game', () => {
         
         expect(testGame.calculateFrameScore()).toEqual(2);
     });
+
+    it('throws error for invalid roll combinations', () => {
+        const testGame = new Game();
+        testGame.recordThrow(5);
+        
+        expect(() => {
+            testGame.recordThrow(6)}).toThrow(Error("Invalid roll combination"));
+    });
+    
 });
