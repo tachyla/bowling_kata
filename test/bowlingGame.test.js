@@ -55,6 +55,13 @@ describe('bowling game', () => {
         expect(testGame.frames[0]).toEqual({frameNumber: 0, first_roll: 5, second_roll: null});
     });
 
+    it('records a third throw in the next frame', () => {
+        const testGame = new Game();
+        testGame.recordThrow(2);
+        testGame.recordThrow(0);
+        testGame.recordThrow(8);
+        expect(testGame.frames[1]).toEqual({frameNumber: 1, first_roll: 8, second_roll: null});
+    });
 
     
 });
