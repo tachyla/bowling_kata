@@ -65,9 +65,10 @@ describe('bowling game', () => {
 
     it('records score "spare" when all pins are knocked down in one frame', () => {
         const testGame = new Game();
-        testGame.recordThrow(4);
-        testGame.recordThrow(6);
+        testGame.recordThrow(0);
+        testGame.recordThrow(10);
 
         expect(testGame.calculateFrameScore()).toEqual("spare");
-    });      
+    }); 
+    
 });
