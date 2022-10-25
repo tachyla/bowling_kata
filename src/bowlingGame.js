@@ -3,38 +3,51 @@ module.exports = class Game {
     constructor(){
         this._frames = [];
         for(let i = 0; i < 10; i++){
-            this._frames.push({frameNumber: i, first_roll: null, second_roll: null});
+            this._frames.push({frameNumber: i, first_roll: null, second_roll: null, frameTotalValue: null});
         }
         this.currentFrame = 0;
     }
 
     recordThrow = (pinValue) => { 
+        let frame = this._frames[this.currentFrame];
+        
+        let previousFrame = this.currentFrame === 0 ? null : this._frames[this.currentFrame - 1];
 
         if(pinValue > 10 || pinValue < 0){
             throw new RangeError("Valid throws are 0 - 10");
         }
         
-        if(!this._frames[this.currentFrame].first_roll){
-            this._frames[this.currentFrame].first_roll = pinValue;
+        if(!frame.first_roll){
+            frame.first_roll = pinValue;
+
+            this.addSpareBonus(previousFrame, pinValue);
+
             return;
         }
 
-        let frameTotal = this._frames[this.currentFrame].first_roll + pinValue;
+        let frameTotal = frame.first_roll + pinValue;
 
         if(frameTotal > 10 ){
             throw new Error("Invalid throw combination");
         }
+        frame.second_roll = pinValue;
+
+        frame.frameTotalValue = this.calculateFrameScore(frame);
         
-        this._frames[this.currentFrame].second_roll = pinValue;
         this.currentFrame++;
     }  
 
-    calculateFrameScore = () => {
-        let frameTotal = this._frames[0].first_roll + this._frames[0].second_roll;
-        if(frameTotal === 10){
-            return 'spare';
-        }
+    calculateFrameScore(frame) {
+        let frameTotal = frame.first_roll + frame.second_roll;
         return frameTotal;
+    }
+
+
+
+    addSpareBonus(previousFrame, pinValue) {
+        if (previousFrame && previousFrame.frameTotalValue == 10) {
+            previousFrame.frameTotalValue = previousFrame.frameTotalValue + pinValue;
+        }
     }
 
     get frames(){
