@@ -70,7 +70,7 @@ describe('bowling game', () => {
         });
     });
 
-    it('records bonus points when a spare was achieved in a frame', () => {
+    it('records bonus points when a spare was thrown in a frame', () => {
         const testGame = new Game();
         testGame.recordThrow(4);
         testGame.recordThrow(6);
@@ -85,6 +85,17 @@ describe('bowling game', () => {
         }
 
         expect(testGame.getScore()).toEqual(0);
-    });
+    }); 
     
+    it('throwing a spare in the 10th frame allows player 1 additional throw', () => {
+        const testGame = new Game();
+        for(let i = 0; i < 18; i++){ 
+            testGame.recordThrow(0);
+        }
+        testGame.recordThrow(3);
+        testGame.recordThrow(7);
+        testGame.recordThrow(9);
+
+        expect(testGame._frames[9].frameTotalValue).toEqual(19);
+    });
 });

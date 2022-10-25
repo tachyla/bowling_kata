@@ -13,6 +13,13 @@ module.exports = class Game {
         
         let previousFrame = this.currentFrame === 0 ? null : this._frames[this.currentFrame - 1];
 
+        if(this.currentFrame > 9){
+            if(this._frames[9].frameTotalValue === 10){
+                this._frames[9].frameTotalValue += pinValue;
+                return;
+            }
+        }
+
         if(pinValue > 10 || pinValue < 0){
             throw new RangeError("Valid throws are 0 - 10");
         }
@@ -41,7 +48,7 @@ module.exports = class Game {
     getScore() {
         let gameScore = 0;
         for(let i = 0; i < this._frames.length; i++){
-            gameScore = gameScore + this._frames[i].frameTotalValue;
+            gameScore += this._frames[i].frameTotalValue;
         }
         return gameScore;
     }
