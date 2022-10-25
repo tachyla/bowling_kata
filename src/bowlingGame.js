@@ -17,32 +17,34 @@ module.exports = class Game {
             throw new RangeError("Valid throws are 0 - 10");
         }
         
-        if(!frame.first_roll){
+        if(frame.first_roll === null){
             frame.first_roll = pinValue;
-
             this.addSpareBonus(previousFrame, pinValue);
-
             return;
         }
-
+    
         let frameTotal = frame.first_roll + pinValue;
 
-        if(frameTotal > 10 ){
+        if(frameTotal > 10){
             throw new Error("Invalid throw combination");
         }
         frame.second_roll = pinValue;
-
         frame.frameTotalValue = this.calculateFrameScore(frame);
-        
         this.currentFrame++;
     }  
 
     calculateFrameScore(frame) {
-        let frameTotal = frame.first_roll + frame.second_roll;
-        return frameTotal;
+        let frameScore = frame.first_roll + frame.second_roll;
+        return frameScore;
     }
 
-
+    getScore() {
+        let gameScore = 0;
+        for(let i = 0; i < this._frames.length; i++){
+            gameScore = gameScore + this._frames[i].frameTotalValue;
+        }
+        return gameScore;
+    }
 
     addSpareBonus(previousFrame, pinValue) {
         if (previousFrame && previousFrame.frameTotalValue == 10) {
