@@ -71,4 +71,11 @@ describe('bowling game', () => {
         testGame.recordThrow(5);
         expect(testGame.frames[0].frameTotalValue).toEqual(15);
     });
+
+    it('throwing a strike on the first roll advances to the next frame', () => {
+        const testGame = new Game();
+        testGame.recordThrow(10);
+        testGame.recordThrow(8);
+        expect(testGame._frames[1].first_roll).toEqual(8);
+    });
 });

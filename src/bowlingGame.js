@@ -18,6 +18,11 @@ module.exports = class Game {
         
         if(!frame.first_roll){
             frame.first_roll = pinValue;
+            if(frame.first_roll === 10){
+                frame.frameTotal = frame.first_roll;
+                this.currentFrame++;
+                return;
+            }
             this.addSpareBonus(previousFrame, pinValue);
             return;
         }
@@ -26,7 +31,6 @@ module.exports = class Game {
         if(frameTotal > 10 ){
             throw new Error("Invalid throw combination");
         }
-
         
         frame.second_roll = pinValue;
 
