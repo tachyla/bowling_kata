@@ -132,8 +132,10 @@ describe('frame', () => {
         expect(testFrame.isSpare()).toEqual(true);
     });
 
-    xit('score is calculated when frame is complete', () => {
+    it('score is calculated when frame is complete', () => {
         const testFrame = new Frame();
-
+        testFrame.first_roll = 0;
+        testFrame.second_roll = 6;
+        expect(testFrame.calculateFrameScore()).toEqual(6);
     });
 });

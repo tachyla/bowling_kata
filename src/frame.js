@@ -16,11 +16,11 @@ module.exports = class Frame{
     }
 
     calculateFrameScore() {
-        this.score = this.first_roll + this.second_roll;
+        return this.first_roll + this.second_roll; 
     }
 
     isSpare() {
-        this.calculateFrameScore();
+        this.score = this.calculateFrameScore();
         return this.score == 10;
     }
 }
