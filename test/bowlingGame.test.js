@@ -106,7 +106,23 @@ describe('frame', () => {
         testFrame.first_roll = 1;
         testFrame.second_roll = 1;
         expect(testFrame.isComplete()).toEqual(true);
-        
+    });
+
+    it('is not complete when no rolls have been made', () => {
+        const testFrame = new Frame();
+        expect(testFrame.isComplete()).toEqual(false);
+    });
+
+    it('is a strike when the first roll is 10', () => {
+        const testFrame = new Frame();
+        testFrame.first_roll = 10;
+        expect(testFrame.isStrike()).toEqual(true);
+    });
+
+    it('is complete when a strike is rolled', () => {
+        const testFrame = new Frame();
+        testFrame.first_roll = 10;
+        expect(testFrame.isComplete()).toEqual(true);
     });
 
     xit('score is calculated when frame is complete', () => {

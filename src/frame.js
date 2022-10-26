@@ -5,10 +5,13 @@ module.exports = class Frame{
         this.second_roll = null;
         this.score = null;
     }
+    
     isComplete() {
-        if(!this.first_roll  && !this.second_roll){
-            return false;
-        }
-        return true;
+        return this.isStrike() 
+            || this.first_roll != null && this.second_roll != null; 
+    }
+
+    isStrike() {
+        return this.first_roll == 10 ;
     }
 }
