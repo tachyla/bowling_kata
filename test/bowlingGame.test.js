@@ -1,4 +1,5 @@
 const Game = require('../src/bowlingGame');
+const Frame = require('../src/frame');
 
 describe('bowling game', () => {
 
@@ -87,4 +88,29 @@ describe('bowling game', () => {
 
         expect(testGame._frames[0].frameTotalValue).toEqual(18);
     }); 
+});
+
+describe('frame', () => {
+    it('frameNumber defaults to 0 ', () => {
+        const testFrame = new Frame();
+        expect(testFrame.frameNumber).toEqual(0);
+    });
+
+    it('frameTotalValue defaults to 0', () => {
+        const testFrame = new Frame();
+        expect(testFrame.score).toEqual(null);
+    });
+
+    it('is complete when first & second roll are not null', () => {
+        const testFrame = new Frame();
+        testFrame.first_roll = 1;
+        testFrame.second_roll = 1;
+        expect(testFrame.isComplete()).toEqual(true);
+        
+    });
+
+    xit('score is calculated when frame is complete', () => {
+        const testFrame = new Frame();
+
+    });
 });
