@@ -86,5 +86,5 @@ describe('bowling game', () => {
         testGame.recordThrow(7);
 
         expect(testGame._frames[0].frameTotalValue).toEqual(18);
-    });     
+    }); 
 });

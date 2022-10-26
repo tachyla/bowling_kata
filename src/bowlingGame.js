@@ -53,7 +53,7 @@ module.exports = class Game {
         }
     }
 
-    addSpareBonus(previousFrame, pinValue) {
+    addSpareBonus(previousFrame) {
         if(previousFrame && previousFrame.frameTotalValue === 10){
             previousFrame.frameTotalValue += this._frames[this.currentFrame].first_roll;
         }
