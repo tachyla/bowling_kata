@@ -125,6 +125,13 @@ describe('frame', () => {
         expect(testFrame.isComplete()).toEqual(true);
     });
 
+    it('is a spare when the score is 10', () => {
+        const testFrame = new Frame();
+        testFrame.first_roll = 8;
+        testFrame.second_roll = 2;
+        expect(testFrame.isSpare()).toEqual(true);
+    });
+
     xit('score is calculated when frame is complete', () => {
         const testFrame = new Frame();
 

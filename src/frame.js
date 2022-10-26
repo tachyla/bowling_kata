@@ -5,7 +5,7 @@ module.exports = class Frame{
         this.second_roll = null;
         this.score = null;
     }
-    
+
     isComplete() {
         return this.isStrike() 
             || this.first_roll != null && this.second_roll != null; 
@@ -13,5 +13,14 @@ module.exports = class Frame{
 
     isStrike() {
         return this.first_roll == 10 ;
+    }
+
+    calculateFrameScore() {
+        this.score = this.first_roll + this.second_roll;
+    }
+
+    isSpare() {
+        this.calculateFrameScore();
+        return this.score == 10;
     }
 }
