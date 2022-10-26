@@ -138,4 +138,12 @@ describe('frame', () => {
         testFrame.second_roll = 6;
         expect(testFrame.calculateFrameScore()).toEqual(6);
     });
+
+    it('score is not calculated when frame is incomplete & not a strike', () => {
+        const testFrame = new Frame();
+        testFrame.first_roll = 7;
+        expect(() => {
+            testFrame.calculateFrameScore()
+        }).toThrow(Error('A complete frame must be thrown to calculate frame score'))
+    });
 });

@@ -16,7 +16,11 @@ module.exports = class Frame{
     }
 
     calculateFrameScore() {
-        return this.first_roll + this.second_roll; 
+        if(this.isComplete()){
+
+            return this.first_roll + this.second_roll; 
+        }
+        throw new Error("A complete frame must be thrown to calculate frame score");
     }
 
     isSpare() {
