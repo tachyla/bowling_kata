@@ -78,4 +78,13 @@ describe('bowling game', () => {
         testGame.recordThrow(8);
         expect(testGame._frames[1].first_roll).toEqual(8);
     });
+
+    it('records bonus strike points and adds the value of the next two throws', () =>{
+        const testGame = new Game();
+        testGame.recordThrow(10);
+        testGame.recordThrow(1);
+        testGame.recordThrow(7);
+
+        expect(testGame._frames[0].frameTotalValue).toEqual(18);
+    });     
 });

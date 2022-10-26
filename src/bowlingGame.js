@@ -17,23 +17,28 @@ module.exports = class Game {
         }
         
         if(!frame.first_roll){
-            frame.first_roll = pinValue;
+            frame.first_roll = pinValue; // 1
+
             if(frame.first_roll === 10){
-                frame.frameTotal = frame.first_roll;
+                frame.frameTotalValue = frame.first_roll;
                 this.currentFrame++;
                 return;
             }
+    
             this.addSpareBonus(previousFrame, pinValue);
             return;
         }
 
         let frameTotal = frame.first_roll + pinValue;
+
         if(frameTotal > 10 ){
             throw new Error("Invalid throw combination");
         }
         
         frame.second_roll = pinValue;
 
+        this.addStrikeBonus(previousFrame);
+        
         frame.frameTotalValue = this.calculateFrameScore(frame);
         this.currentFrame++;
     }  
@@ -42,9 +47,15 @@ module.exports = class Game {
         return frame.first_roll + frame.second_roll;
     }
 
+    addStrikeBonus(previousFrame) {
+        if (previousFrame && previousFrame.first_roll === 10) {
+            previousFrame.frameTotalValue += this._frames[this.currentFrame].second_roll;
+        }
+    }
+
     addSpareBonus(previousFrame, pinValue) {
         if(previousFrame && previousFrame.frameTotalValue === 10){
-            previousFrame.frameTotalValue = previousFrame.frameTotalValue + this._frames[this.currentFrame].first_roll;
+            previousFrame.frameTotalValue += this._frames[this.currentFrame].first_roll;
         }
     }
 
