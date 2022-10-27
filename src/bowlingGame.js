@@ -8,18 +8,18 @@ module.exports = class Game {
         this.currentFrame = 0;
     }
 
-    recordThrow = (pinValue) => { 
+    recordRoll = (pinValue) => { 
         let frame = this._frames[this.currentFrame];
         let previousFrame = this.currentFrame === 0 ? null : this._frames[this.currentFrame - 1];
 
         if(pinValue > 10 || pinValue < 0){
-            throw new RangeError("Valid throws are 0 - 10");
+            throw new RangeError("Valid rolls are 0 - 10");
         }
         
         if(!frame.first_roll){
-            frame.first_roll = pinValue; // 1
-
-            if(frame.first_roll === 10){
+            frame.first_roll = pinValue; 
+            
+            if(this.isStrike(frame)){
                 frame.frameTotalValue = frame.first_roll;
                 this.currentFrame++;
                 return;
@@ -32,7 +32,7 @@ module.exports = class Game {
         let frameTotal = frame.first_roll + pinValue;
 
         if(frameTotal > 10 ){
-            throw new Error("Invalid throw combination");
+            throw new Error("Invalid roll combination");
         }
         
         frame.second_roll = pinValue;
@@ -42,6 +42,13 @@ module.exports = class Game {
         frame.frameTotalValue = this.calculateFrameScore(frame);
         this.currentFrame++;
     }  
+
+    isStrike(frame) {
+           if(frame.first_roll == 10){
+            return true;
+           }
+           return false;
+    }
 
     calculateFrameScore = (frame) => {
         return frame.first_roll + frame.second_roll;
@@ -63,4 +70,3 @@ module.exports = class Game {
         return [...this._frames];
     }
 }
-

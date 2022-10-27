@@ -3,25 +3,25 @@ const Frame = require('../src/frame');
 
 describe('bowling game', () => {
 
-    it('adds 1 point value from player throw', () => {
+    it('adds 1 point value from player roll', () => {
         const testGame = new Game();
-        testGame.recordThrow(1);
+        testGame.recordRoll(1);
         expect(testGame.frames[0].first_roll).toEqual(1);
     });
 
-    it('throws error when outside the valid range of a throw', () => {
+    it('throws error when outside the valid range of a roll', () => {
         const testGame = new Game();
 
         expect(() => {
-            testGame.recordThrow(-1)
+            testGame.recordRoll(-1)
         }).toThrow(RangeError);
 
     });
 
-    it('records two throws per one frame', () => {
+    it('records two rolls per one frame', () => {
         const testGame = new Game();
-        testGame.recordThrow(5);
-        testGame.recordThrow(4);
+        testGame.recordRoll(5);
+        testGame.recordRoll(4);
         expect(testGame.frames[0]).toEqual({
             frameNumber: 0,
             first_roll: 5,
@@ -32,18 +32,18 @@ describe('bowling game', () => {
 
     it('returns total points of one frame', () => {
         const testGame = new Game();
-        testGame.recordThrow(2);
-        testGame.recordThrow(0);
+        testGame.recordRoll(2);
+        testGame.recordRoll(0);
         
         expect(testGame._frames[0].frameTotalValue).toEqual(2);
     });
 
-    it('throws error for invalid throw combinations', () => {
+    it('throws error for invalid roll combinations', () => {
         const testGame = new Game();
-        testGame.recordThrow(5);
+        testGame.recordRoll(5);
         
         expect(() => {
-            testGame.recordThrow(6)}).toThrow(Error("Invalid throw combination"));
+            testGame.recordRoll(6)}).toThrow(Error("Invalid roll combination"));
     });
 
     it('has 10 frames for a new game', () => {
@@ -51,99 +51,133 @@ describe('bowling game', () => {
         expect(testGame.frames.length).toEqual(10);
     });
 
-    it('records the first throw in the first frame', () => {
+    it('records the first roll in the first frame', () => {
         const testGame = new Game();
-        testGame.recordThrow(5);
+        testGame.recordRoll(5);
         expect(testGame.frames[0]).toEqual({frameNumber: 0, first_roll: 5, second_roll: null});
     });
 
-    it('records a third throw in the next frame', () => {
+    it('records a third roll in the next frame', () => {
         const testGame = new Game();
-        testGame.recordThrow(2);
-        testGame.recordThrow(0);
-        testGame.recordThrow(8);
+        testGame.recordRoll(2);
+        testGame.recordRoll(0);
+        testGame.recordRoll(8);
         expect(testGame.frames[1]).toEqual({frameNumber: 1, first_roll: 8, second_roll: null});
     });  
 
     it('records bonus points when a spare was achieved in a frame', () => {
         const testGame = new Game();
-        testGame.recordThrow(4);
-        testGame.recordThrow(6);
-        testGame.recordThrow(5);
+        testGame.recordRoll(4);
+        testGame.recordRoll(6);
+        testGame.recordRoll(5);
         expect(testGame.frames[0].frameTotalValue).toEqual(15);
     });
 
-    it('throwing a strike on the first roll advances to the next frame', () => {
+    it('rolling a strike on the first roll advances to the next frame', () => {
         const testGame = new Game();
-        testGame.recordThrow(10);
-        testGame.recordThrow(8);
+        testGame.recordRoll(10);
+        testGame.recordRoll(8);
         expect(testGame._frames[1].first_roll).toEqual(8);
     });
 
-    it('records bonus strike points and adds the value of the next two throws', () =>{
+    it('records bonus strike points and adds the value of the next two rolls', () =>{
         const testGame = new Game();
-        testGame.recordThrow(10);
-        testGame.recordThrow(1);
-        testGame.recordThrow(7);
+        testGame.recordRoll(10);
+        testGame.recordRoll(1);
+        testGame.recordRoll(7);
 
         expect(testGame._frames[0].frameTotalValue).toEqual(18);
     }); 
 });
 
 describe('frame', () => {
-    it('frameNumber defaults to 0 ', () => {
+    it('defaults frameNumber to 0', () => {
         const testFrame = new Frame();
         expect(testFrame.frameNumber).toEqual(0);
     });
 
-    it('frameTotalValue defaults to 0', () => {
+    it('defaults score to null', () => {
         const testFrame = new Frame();
         expect(testFrame.score).toEqual(null);
     });
 
-    it('is complete when first & second roll are not null', () => {
-        const testFrame = new Frame();
-        testFrame.first_roll = 1;
-        testFrame.second_roll = 1;
-        expect(testFrame.isComplete()).toEqual(true);
+    describe("is Complete", () => {
+        it('returns true when first & second roll are not null', () => {
+            const testFrame = new Frame();
+            testFrame.first_roll = 1;
+            testFrame.second_roll = 1;
+            expect(testFrame.isComplete()).toEqual(true);
+        });
+
+        it('returns false when no rolls have been made', () => {
+            const testFrame = new Frame();
+            expect(testFrame.isComplete()).toEqual(false);
+        });
+
+        it('returns true when a strike is rolled', () => {
+            const testFrame = new Frame();
+            testFrame.first_roll = 10;
+            expect(testFrame.isComplete()).toEqual(true);
+        });
+    
     });
 
-    it('is not complete when no rolls have been made', () => {
-        const testFrame = new Frame();
-        expect(testFrame.isComplete()).toEqual(false);
+    describe('is Strike', () => {
+        it('returns true when the first roll is 10', () => {
+            const testFrame = new Frame();
+            testFrame.first_roll = 10;
+            expect(testFrame.isStrike()).toEqual(true);
+        });
+
+        it('returns false when the first roll is not 10', () => {
+            const testFrame = new Frame();
+            testFrame.first_roll = 6;
+            expect(testFrame.isStrike()).toEqual(false);
+        });
     });
 
-    it('is a strike when the first roll is 10', () => {
-        const testFrame = new Frame();
-        testFrame.first_roll = 10;
-        expect(testFrame.isStrike()).toEqual(true);
+    describe('is Spare', () => {
+        it('returns true when the score is 10', () => {
+            const testFrame = new Frame();
+            testFrame.first_roll = 8;
+            testFrame.second_roll = 2;
+            expect(testFrame.isSpare()).toEqual(true);
+        });
+  
+        it('returns false when the score is not 10', () => {
+            const testFrame = new Frame();
+            testFrame.first_roll = 6;
+            testFrame.second_roll = 1;
+            expect(testFrame.isSpare()).toEqual(false);
+        });
+
+        it('returns false when a strike has been rolled', () => {
+            const testFrame = new Frame();
+            testFrame.first_roll = 10;
+            let result = testFrame.isSpare();
+            expect(result).toEqual(false);
+        });
+
+        it('returns false when single roll thats not a strike', () => {
+            const testFrame = new Frame();
+            testFrame.first_roll = 8;
+            let result = testFrame.isSpare();
+            expect(result).toEqual(false);
+        });
     });
 
-    it('is complete when a strike is rolled', () => {
-        const testFrame = new Frame();
-        testFrame.first_roll = 10;
-        expect(testFrame.isComplete()).toEqual(true);
-    });
-
-    it('is a spare when the score is 10', () => {
-        const testFrame = new Frame();
-        testFrame.first_roll = 8;
-        testFrame.second_roll = 2;
-        expect(testFrame.isSpare()).toEqual(true);
-    });
-
-    it('score is calculated when frame is complete', () => {
-        const testFrame = new Frame();
-        testFrame.first_roll = 0;
-        testFrame.second_roll = 6;
-        expect(testFrame.calculateFrameScore()).toEqual(6);
-    });
-
-    it('score is not calculated when frame is incomplete & not a strike', () => {
-        const testFrame = new Frame();
-        testFrame.first_roll = 7;
-        expect(() => {
-            testFrame.calculateFrameScore()
-        }).toThrow(Error('A complete frame must be thrown to calculate frame score'))
+    describe("calculate Score", () => {
+        it('returns score when frame is complete', () => {
+            const testFrame = new Frame();
+            testFrame.first_roll = 0;
+            testFrame.second_roll = 6;
+            expect(testFrame.calculateFrameScore()).toEqual(6);
+        });
+  
+        it('does not calculate score when frame is incomplete', () => {
+            const testFrame = new Frame();
+            testFrame.first_roll = 7;
+            expect(testFrame.calculateFrameScore()).toEqual(null);
+        });
     });
 });

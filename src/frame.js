@@ -12,19 +12,18 @@ module.exports = class Frame{
     }
 
     isStrike() {
-        return this.first_roll == 10 ;
+        return this.first_roll == 10;
     }
 
     calculateFrameScore() {
         if(this.isComplete()){
-
             return this.first_roll + this.second_roll; 
         }
-        throw new Error("A complete frame must be thrown to calculate frame score");
+        return null;
     }
 
-    isSpare() {
-        this.score = this.calculateFrameScore();
-        return this.score == 10;
+    isSpare(){
+        return !this.isStrike()
+        && this.first_roll + this.second_roll == 10;
     }
 }
