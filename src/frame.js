@@ -16,13 +16,6 @@ module.exports = class Frame{
         return this.first_roll == 10;
     }
 
-    calculateFrameScore() {
-        if(this.isComplete()){
-            return this.first_roll + this.second_roll; 
-        }
-        return null;
-    }
-
     isSpare() {
         return !this.isStrike()
         && this.first_roll + this.second_roll == 10;
