@@ -28,17 +28,5 @@ module.exports = class Frame{
         && this.first_roll + this.second_roll == 10;
     }
 
-    scoreSpareFrame() {
-        // isComplete?
-        if(!this.isComplete){
-
-            //does it have previous frame?
-            if(hasPreviousFrame){
-                return previousFrame.score + this.first_roll;
-            }
-            //else{do nothing}
-        }
-    }
-
 
 }
