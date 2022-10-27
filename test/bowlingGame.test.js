@@ -26,7 +26,7 @@ describe('bowling game', () => {
             frameNumber: 0,
             first_roll: 5,
             second_roll: 4,
-            frameTotalValue: 9
+            score: 9
         });
     });
 
@@ -35,7 +35,7 @@ describe('bowling game', () => {
         testGame.recordRoll(2);
         testGame.recordRoll(0);
         
-        expect(testGame._frames[0].frameTotalValue).toEqual(2);
+        expect(testGame._frames[0].score).toEqual(2);
     });
 
     it('throws error for invalid roll combinations', () => {
@@ -54,7 +54,7 @@ describe('bowling game', () => {
     it('records the first roll in the first frame', () => {
         const testGame = new Game();
         testGame.recordRoll(5);
-        expect(testGame.frames[0]).toEqual({frameNumber: 0, first_roll: 5, second_roll: null});
+        expect(testGame.frames[0]).toEqual({frameNumber: 0, first_roll: 5, second_roll: null, score: null});
     });
 
     it('records a third roll in the next frame', () => {
@@ -62,7 +62,7 @@ describe('bowling game', () => {
         testGame.recordRoll(2);
         testGame.recordRoll(0);
         testGame.recordRoll(8);
-        expect(testGame.frames[1]).toEqual({frameNumber: 1, first_roll: 8, second_roll: null});
+        expect(testGame.frames[1]).toEqual({frameNumber: 1, first_roll: 8, second_roll: null, score: null});
     });  
 
     it('records bonus points when a spare was achieved in a frame', () => {
@@ -70,7 +70,7 @@ describe('bowling game', () => {
         testGame.recordRoll(4);
         testGame.recordRoll(6);
         testGame.recordRoll(5);
-        expect(testGame.frames[0].frameTotalValue).toEqual(15);
+        expect(testGame.frames[0].score).toEqual(15);
     });
 
     it('rolling a strike on the first roll advances to the next frame', () => {
@@ -86,7 +86,7 @@ describe('bowling game', () => {
         testGame.recordRoll(1);
         testGame.recordRoll(7);
 
-        expect(testGame._frames[0].frameTotalValue).toEqual(18);
+        expect(testGame._frames[0].score).toEqual(18);
     }); 
 });
 
@@ -158,7 +158,7 @@ describe('frame', () => {
             expect(result).toEqual(false);
         });
 
-        it('returns false when single roll thats not a strike', () => {
+        it('returns false when single roll is not a strike', () => {
             const testFrame = new Frame();
             testFrame.first_roll = 8;
             let result = testFrame.isSpare();
@@ -180,4 +180,5 @@ describe('frame', () => {
             expect(testFrame.calculateFrameScore()).toEqual(null);
         });
     });
+
 });

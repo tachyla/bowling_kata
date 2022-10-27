@@ -1,16 +1,17 @@
+const Frame = require('./frame');
 module.exports = class Game {
 
     constructor(){
         this._frames = [];
         for(let i = 0; i < 10; i++){
-            this._frames.push({frameNumber: i, first_roll: null, second_roll: null});
+            this._frames.push(new Frame(i));
         }
-        this.currentFrame = 0;
+        this.currentFrameIndex = 0;
     }
 
     recordRoll = (pinValue) => { 
-        let frame = this._frames[this.currentFrame];
-        let previousFrame = this.currentFrame === 0 ? null : this._frames[this.currentFrame - 1];
+        let frame = this._frames[this.currentFrameIndex];
+        let previousFrame = this.currentFrameIndex === 0 ? null : this._frames[this.currentFrameIndex - 1];
 
         if(pinValue > 10 || pinValue < 0){
             throw new RangeError("Valid rolls are 0 - 10");
@@ -20,8 +21,8 @@ module.exports = class Game {
             frame.first_roll = pinValue; 
             
             if(this.isStrike(frame)){
-                frame.frameTotalValue = frame.first_roll;
-                this.currentFrame++;
+                frame.score = frame.first_roll;
+                this.currentFrameIndex++;
                 return;
             }
     
@@ -39,8 +40,8 @@ module.exports = class Game {
 
         this.addStrikeBonus(previousFrame);
         
-        frame.frameTotalValue = this.calculateFrameScore(frame);
-        this.currentFrame++;
+        frame.score = this.calculateFrameScore(frame);
+        this.currentFrameIndex++;
     }  
 
     isStrike(frame) {
@@ -56,13 +57,13 @@ module.exports = class Game {
 
     addStrikeBonus(previousFrame) {
         if (previousFrame && previousFrame.first_roll === 10) {
-            previousFrame.frameTotalValue += this._frames[this.currentFrame].second_roll;
+            previousFrame.score += this._frames[this.currentFrameIndex].second_roll;
         }
     }
 
     addSpareBonus(previousFrame) {
-        if(previousFrame && previousFrame.frameTotalValue === 10){
-            previousFrame.frameTotalValue += this._frames[this.currentFrame].first_roll;
+        if(previousFrame && previousFrame.score === 10){
+            previousFrame.score += this._frames[this.currentFrameIndex].first_roll;
         }
     }
 
