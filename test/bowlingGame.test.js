@@ -8,14 +8,7 @@ describe('bowling game', () => {
         expect(testGame.frames[0].first_roll).toEqual(1);
     });
 
-    it('throws error when outside the valid range of a roll', () => {
-        const testGame = new Game();
-
-        expect(() => {
-            testGame.recordRoll(-1)
-        }).toThrow(RangeError);
-
-    });
+    
 
     it('records two rolls per one frame', () => {
         const testGame = new Game();

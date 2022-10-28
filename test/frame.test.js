@@ -13,6 +13,50 @@ describe('frame', () => {
         expect(testFrame.score).toEqual(null);
     });
 
+    describe("record roll", () => {
+        it("records a single roll in the first_roll property", () => {
+            const testFrame = new Frame();
+            testFrame.recordRoll(1);
+
+            expect(testFrame.first_roll).toEqual(1);
+        })
+
+        it("records a second roll in the second_roll property", () => {
+            const testFrame = new Frame();
+            testFrame.recordRoll(1);
+            testFrame.recordRoll(2);
+
+            expect(testFrame.second_roll).toEqual(2);
+        })
+
+        it('throws error when outside the valid range of a roll', () => {
+            const testFrame = new Frame();
+    
+            expect(() => {
+                testFrame.recordRoll(-1)
+            }).toThrow(RangeError);
+    
+        });
+
+        it("throws an error if a second roll is made when the first is a strike", () => {
+            const testFrame = new Frame();
+            testFrame.recordRoll(10);
+            
+            expect(() => {
+                testFrame.recordRoll(1);
+            }).toThrow(Error);
+        })
+
+        it("throws an error if a second roll will exceed the maximum pins for the frame", () => {
+            const testFrame = new Frame();
+            testFrame.recordRoll(5);
+            
+            expect(() => {
+                testFrame.recordRoll(6);
+            }).toThrow(Error);
+        })
+    })
+
     describe("is Complete", () => {
         it('returns true when first & second roll are not null', () => {
             const testFrame = new Frame();
@@ -75,21 +119,6 @@ describe('frame', () => {
             testFrame.first_roll = 8;
             let result = testFrame.isSpare();
             expect(result).toEqual(false);
-        });
-    });
-
-    describe("calculate Score", () => {
-        xit('returns score when frame is complete', () => {
-            const testFrame = new Frame();
-            testFrame.first_roll = 0;
-            testFrame.second_roll = 6;
-            expect(testFrame.calculateFrameScore()).toEqual(6);
-        });
-  
-        xit('does not calculate score when frame is incomplete', () => {
-            const testFrame = new Frame();
-            testFrame.first_roll = 7;
-            expect(testFrame.calculateFrameScore()).toEqual("Cannot calculate frame score until after a second roll");
         });
     });
 

@@ -9,39 +9,14 @@ module.exports = class Game {
         this.currentFrameIndex = 0;
     }
 
-    recordRoll = (pinValue) => { 
+    recordRoll(pinValue) { 
         let frame = this._frames[this.currentFrameIndex];
-        let previousFrame = this.currentFrameIndex === 0 ? null : this._frames[this.currentFrameIndex - 1];
+        
+        frame.recordRoll(pinValue);
 
-        if(pinValue > 10 || pinValue < 0){
-            throw new RangeError("Valid rolls are 0 - 10");
+        if (frame.isComplete()) {
+            this.currentFrameIndex++;
         }
-
-        if(!frame.first_roll){ 
-            frame.first_roll = pinValue;
-            if(frame.isStrike()){
-                this.currentFrameIndex++;
-
-                if(!previousFrame){
-                    return;
-                }
-                return this.calculateFrameScore(previousFrame);
-            }
-            if(!previousFrame){
-                return;
-            }
-            return this.calculateFrameScore(previousFrame);
-        }
-
-        if(frame.first_roll + pinValue > 10 )throw new Error("Invalid roll combination");
-        frame.second_roll = pinValue;
-        this.calculateFrameScore(frame);
-
-        this.currentFrameIndex++;
-    }   
-
-    isStrike(frame) {
-           return frame.first_roll == 10;
     }
 
     calculateFrameScore(frame) {
