@@ -34,7 +34,7 @@ describe('bowling game', () => {
         testGame.recordRoll(2);
         testGame.recordRoll(0);
         
-        expect(testGame._frames[0].score).toEqual(2);
+        expect(testGame.frames[0].score).toEqual(2);
     });
 
     it('throws error for invalid roll combinations', () => {
@@ -76,7 +76,7 @@ describe('bowling game', () => {
         const testGame = new Game();
         testGame.recordRoll(10);
         testGame.recordRoll(8);
-        expect(testGame._frames[1].first_roll).toEqual(8);
+        expect(testGame.frames[1].first_roll).toEqual(8);
     });
 
     it('records bonus strike points and adds the value of the next two rolls', () =>{
@@ -87,5 +87,14 @@ describe('bowling game', () => {
 
         expect(testGame._frames[0].score).toEqual(18);
     }); 
+
+    it('records bonus strike points and the value of the next two strikes', () => {
+        const testGame = new Game();
+        testGame.recordRoll(10);
+        testGame.recordRoll(10);
+        testGame.recordRoll(10);
+
+        expect(testGame._frames[0].score).toEqual(30);
+    })
 });
 

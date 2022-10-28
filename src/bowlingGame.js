@@ -16,54 +16,58 @@ module.exports = class Game {
         if(pinValue > 10 || pinValue < 0){
             throw new RangeError("Valid rolls are 0 - 10");
         }
-        
-        if(!frame.first_roll){
-            frame.first_roll = pinValue; 
-            
-            if(this.isStrike(frame)){
-                frame.score = frame.first_roll;
+
+        if(!frame.first_roll){ 
+            frame.first_roll = pinValue;
+            if(frame.isStrike()){
                 this.currentFrameIndex++;
+
+                if(!previousFrame){
+                    return;
+                }
+                return this.calculateFrameScore(previousFrame);
+            }
+            if(!previousFrame){
                 return;
             }
-    
-            this.addSpareBonus(previousFrame, pinValue);
-            return;
+            return this.calculateFrameScore(previousFrame);
         }
 
-        let frameTotal = frame.first_roll + pinValue;
-
-        if(frameTotal > 10 ){
-            throw new Error("Invalid roll combination");
-        }
-        
+        if(frame.first_roll + pinValue > 10 )throw new Error("Invalid roll combination");
         frame.second_roll = pinValue;
+        this.calculateFrameScore(frame);
 
-        this.addStrikeBonus(previousFrame);
-        
-        frame.score = this.calculateFrameScore(frame);
         this.currentFrameIndex++;
-    }  
+    }   
 
     isStrike(frame) {
-           if(frame.first_roll == 10){
-            return true;
-           }
-           return false;
+           return frame.first_roll == 10;
     }
 
-    calculateFrameScore = (frame) => {
-        return frame.first_roll + frame.second_roll;
-    }
+    calculateFrameScore(frame) {
+        if(!frame.isComplete()) return "Cannot calculate frame score until after a second roll";
 
-    addStrikeBonus(previousFrame) {
-        if (previousFrame && previousFrame.first_roll === 10) {
-            previousFrame.score += this._frames[this.currentFrameIndex].second_roll;
+        if(frame.isRegular()){
+            return frame.score = frame.first_roll + frame.second_roll;
+        }
+
+        if(frame.isSpare()){
+            return this.addSpareBonus(frame);
         }
     }
 
     addSpareBonus(previousFrame) {
-        if(previousFrame && previousFrame.score === 10){
-            previousFrame.score += this._frames[this.currentFrameIndex].first_roll;
+       previousFrame.score = previousFrame.first_roll + previousFrame.second_roll + this._frames[this.currentFrameIndex].first_roll;
+    }
+
+    addStrikeBonus(previousFrame) {
+        let previousFrameScore = previousFrame.score;
+        let firstBonusRoll = this._frames[this.currentFrameIndex].first_roll;
+        let secondBonusRoll = this._frames[this.currentFrameIndex].second_roll;
+
+        if (previousFrame && previousFrame.isStrike()) {
+            
+            previousFrame.score += this._frames[this.currentFrameIndex].second_roll;
         }
     }
 

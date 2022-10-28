@@ -21,5 +21,10 @@ module.exports = class Frame{
         && this.first_roll + this.second_roll == 10;
     }
 
+    isRegular() {
+        return !this.isStrike()
+        && !this.isSpare(); 
+    }
+
 
 }
