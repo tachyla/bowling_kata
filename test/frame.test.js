@@ -8,11 +8,6 @@ describe('frame', () => {
         expect(testFrame.frameNumber).toEqual(0);
     });
 
-    it('defaults score to null', () => {
-        const testFrame = new Frame();
-        expect(testFrame.score).toEqual(null);
-    });
-
     describe("record roll", () => {
         it("records a single roll in the first_roll property", () => {
             const testFrame = new Frame();
@@ -54,8 +49,17 @@ describe('frame', () => {
             expect(() => {
                 testFrame.recordRoll(6);
             }).toThrow(Error);
-        })
-    })
+        });
+
+        it('records a second roll even if the first roll is zero', () => {
+            const testFrame = new Frame();
+            testFrame.recordRoll(0);
+            testFrame.recordRoll(10);
+
+            expect(testFrame.first_roll).toEqual(0);
+            expect(testFrame.second_roll).toEqual(10);
+        });
+    });
 
     describe("is Complete", () => {
         it('returns true when first & second roll are not null', () => {
@@ -73,6 +77,14 @@ describe('frame', () => {
         it('returns true when a strike is rolled', () => {
             const testFrame = new Frame();
             testFrame.first_roll = 10;
+            expect(testFrame.isComplete()).toEqual(true);
+        });
+
+        it('returns true when both roll are zero', () => {
+            const testFrame = new Frame();
+            testFrame.first_roll = 0;
+            testFrame.second_roll = 0;
+
             expect(testFrame.isComplete()).toEqual(true);
         });
     

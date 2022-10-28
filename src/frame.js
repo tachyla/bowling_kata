@@ -4,7 +4,6 @@ module.exports = class Frame{
         this.frameNumber = frameNumber ? frameNumber : 0;
         this.first_roll = null;
         this.second_roll = null;
-        this.score = null;
     }
 
     isComplete() {
@@ -21,11 +20,6 @@ module.exports = class Frame{
         && this.first_roll + this.second_roll == 10;
     }
 
-    isRegular() {
-        return !this.isStrike()
-        && !this.isSpare(); 
-    }
-
     recordRoll(pinValue) {
         if(pinValue > 10 || pinValue < 0){
             throw new RangeError("Valid rolls are 0 - 10");
@@ -39,7 +33,7 @@ module.exports = class Frame{
             throw new Error("Invalid roll combination");
         }
         
-        if(!this.first_roll){ 
+        if(this.first_roll == null){ 
             this.first_roll = pinValue;
         }
         else {

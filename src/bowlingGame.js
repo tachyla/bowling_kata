@@ -9,6 +9,10 @@ module.exports = class Game {
         this.currentFrameIndex = 0;
     }
 
+    get frames(){
+        return [...this._frames];
+    }
+
     recordRoll(pinValue) { 
         let frame = this._frames[this.currentFrameIndex];
         
@@ -20,33 +24,41 @@ module.exports = class Game {
     }
 
     calculateFrameScore(frame) {
-        if(!frame.isComplete()) return "Cannot calculate frame score until after a second roll";
-
-        if(frame.isRegular()){
-            return frame.score = frame.first_roll + frame.second_roll;
-        }
+        if(!frame.isComplete()) return null;
 
         if(frame.isSpare()){
-            return this.addSpareBonus(frame);
+            let nextRoll = this.getNextRoll(frame);
+            if (nextRoll == null) {
+                return null;
+            }
+
+            return frame.first_roll + frame.second_roll + nextRoll;
         }
-    }
 
-    addSpareBonus(previousFrame) {
-       previousFrame.score = previousFrame.first_roll + previousFrame.second_roll + this._frames[this.currentFrameIndex].first_roll;
-    }
+        if(frame.isStrike()){
+            let nextRoll = this.getNextRoll(frame);
+            let subsequentRoll = this.getSubsequentRoll(frame);
 
-    addStrikeBonus(previousFrame) {
-        let previousFrameScore = previousFrame.score;
-        let firstBonusRoll = this._frames[this.currentFrameIndex].first_roll;
-        let secondBonusRoll = this._frames[this.currentFrameIndex].second_roll;
+            if (nextRoll == null || subsequentRoll == null) {
+                return null;
+            }
 
-        if (previousFrame && previousFrame.isStrike()) {
-            
-            previousFrame.score += this._frames[this.currentFrameIndex].second_roll;
+            return frame.first_roll + this.getNextRoll(frame) + this.getSubsequentRoll(frame);
         }
+        return frame.first_roll + frame.second_roll;
     }
 
-    get frames(){
-        return [...this._frames];
+    getNextRoll(frame) {
+        let nextFrame = this.frames[frame.frameNumber + 1];
+        return nextFrame.first_roll;
+    }
+
+    getSubsequentRoll(frame) {
+        let nextFrame = this.frames[frame.frameNumber + 1];
+        if(nextFrame.isStrike()) {
+            let subsequentFrame = this.frames[frame.frameNumber + 2]
+            return subsequentFrame.first_roll;   
+        }
+        return nextFrame.second_roll;
     }
 }
