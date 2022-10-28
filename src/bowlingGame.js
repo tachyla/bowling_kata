@@ -27,26 +27,35 @@ module.exports = class Game {
         if(!frame.isComplete()) return null;
 
         if(frame.isSpare()){
-            let nextRoll = this.getNextRoll(frame);
-            if (nextRoll == null) {
-                return null;
-            }
-
-            return frame.first_roll + frame.second_roll + nextRoll;
+            return this.calculateSpareScore(frame);
         }
 
         if(frame.isStrike()){
-            let nextRoll = this.getNextRoll(frame);
-            let subsequentRoll = this.getSubsequentRoll(frame);
-
-            if (nextRoll == null || subsequentRoll == null) {
-                return null;
-            }
-
-            return frame.first_roll + this.getNextRoll(frame) + this.getSubsequentRoll(frame);
+           return this.calculateStrikeScore(frame);
         }
+        
         return frame.first_roll + frame.second_roll;
     }
+
+    calculateStrikeScore(frame){
+        let nextRoll = this.getNextRoll(frame);
+        let subsequentRoll = this.getSubsequentRoll(frame);
+
+        if (nextRoll == null || subsequentRoll == null) {
+            return null;
+        }
+
+        return frame.first_roll + this.getNextRoll(frame) + this.getSubsequentRoll(frame);
+    }
+
+    calculateSpareScore(frame){
+        let nextRoll = this.getNextRoll(frame);
+        if (nextRoll == null) {
+            return null;
+        }
+
+        return frame.first_roll + frame.second_roll + nextRoll;
+    } 
 
     getNextRoll(frame) {
         let nextFrame = this.frames[frame.frameNumber + 1];
