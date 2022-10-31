@@ -3,6 +3,11 @@ module.exports = class Game {
 
     constructor(){
         this._frames = [];
+        // subtract for last frame 
+        // last frame class
+        // write little psuedocode
+        // write psuedocode todo:tests
+
         for(let i = 0; i < 10; i++){
             this._frames.push(new Frame(i));
         }
@@ -33,7 +38,7 @@ module.exports = class Game {
         if(frame.isStrike()){
            return this.calculateStrikeScore(frame);
         }
-        
+
         return frame.first_roll + frame.second_roll;
     }
 
